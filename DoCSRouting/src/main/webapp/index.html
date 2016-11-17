@@ -1,0 +1,78 @@
+<!doctype html>
+<html ng-app="docs-application">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>DoCS Routing Application</title>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-animate.min.js"></script>
+        <script type="text/javascript">
+        FileAPI = {
+                debug: true,
+                //forceLoad: true, html5: false //to debug flash in HTML5 browsers
+                //wrapInsideDiv: true, //experimental for fixing css issues
+                //only one of jsPath or jsUrl.
+            //jsPath: '/js/FileAPI.min.js/folder/', 
+            //jsUrl: 'yourcdn.com/js/FileAPI.min.js',
+
+            //only one of staticPath or flashUrl.
+            //staticPath: '/flash/FileAPI.flash.swf/folder/'
+            //flashUrl: 'yourcdn.com/js/FileAPI.flash.swf'
+        };
+        </script>
+        <script src="angular-file-upload-shim.js"></script>
+        <script src="angular-file-upload.js"></script>
+        <script src="controller.js"></script>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <script src="ng-table.js"></script>
+        <link href="ng-table.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body ng-controller="MainCtrl as main">
+        <div>
+            <fieldset><legend>User Details</legend>
+            <span><input ng-model="name" /></span><br/>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset><legend>Documents Shared Links</legend>
+            <div><button ng-click="getItems()">Refresh</button></div>
+            <hr/>
+            <div>
+            <table ng-table="tableParams" class="table ng-table-responsive" style="width: 100%">
+                <tr ng-repeat="share in $data">
+                    <td data-title="'Name'" sortable="'name'">
+                        {{share.name}}
+                    </td>
+                    <td data-title="'Created Time'" sortable="'createdTime'" style="width: 15%">
+                        {{share.createdTime}}
+                    </td>
+                    <td data-title="'Size'" sortable="'size'" style="width: 15%">
+                        {{share.size}}
+                    </td>
+                    <td data-title="'Download'" style="width: 10%;">
+                        <a ng-href="/DoCSRouting/webresources/download?fid={{ share.id }}">Download</a>
+                    </td>
+                </tr>
+            </table>            
+            </div>
+            </fieldset>
+        </div>
+        <div>
+            <form name="myForm">
+                    <fieldset><legend>Upload</legend>
+                        To: <input type="text" name="to" ng-model="to" size="39"><br>
+                        Title: <input type="text" name="title" ng-model="title" size="39"><br>
+                        Message: <br>
+                        <textarea name="message" ng-model="message"></textarea><br>
+                        Drop File:
+                        <div ng-file-drop ng-model="files" class="drop-box" 
+                            drag-over-class="dragover" ng-multiple="false" allow-dir="false"
+                            >drop files here to upload</div>
+                        <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                        <div>{{ result }}</div>
+                    </fieldset>
+                    <br/>
+            </form>
+        </div>
+    </body>
+</html>
